@@ -1,10 +1,9 @@
-# Reto Técnico – Automatización de Pruebas de APIs (QA/QE Semi Senior)
-
+# Reto Técnico – Automatización de Pruebas de APIs
 Framework de automatización de pruebas de API con **[Karate DSL](https://karatelabs.github.io/karate/)** sobre [Fake Store API](https://fakestoreapi.com/docs), enfocado en el recurso **Products**.
 
 ## ¿Por qué Karate?
 
-- **BDD sin capas redundantes**: el `.feature` (Gherkin) *es* el test, no hay que mantener step definitions manuales como en Cucumber+RestAssured. Menos código, menos puntos de fallo, más legible para perfiles no-programadores del equipo QA.
+- **BDD sin capas redundantes**: el `.feature` (Gherkin) *es* el test, no hay que mantener step definitions manuales como en Cucumber+RestAssured. Menos código, menos puntos de fallo.
 - **Match nativo tipado**: `match` valida estructura, tipos de dato y valores en una sola expresión (`'#number'`, `'#string'`, `'#regex ...'`, `'#notpresent'`, `#[n]`), sin librerías de aserciones adicionales.
 - **Reporte con evidencia completa out-of-the-box**: cada step deja request/response completos (URL, headers, body) en el reporte HTML nativo, exactamente lo que exige el entregable de reportería de este reto.
 - **JUnit5 + Maven**: se integra igual que cualquier suite Java (`mvn test`), corre en paralelo, e importa en cualquier CI sin configuración adicional.
@@ -39,14 +38,17 @@ Framework de automatización de pruebas de API con **[Karate DSL](https://karate
 │   │       ├── update-product.feature        # Caso 4 (positivo) + hallazgo de persistencia
 │   │       ├── product-not-found.feature     # Caso 5 (negativo)
 │   │       └── list-products-limit.feature   # Caso 8 (edge cases de paginación)
+│   └── demo/                              # NO forma parte de la suite (ver seccion "Reporte de ejecucion")
+│       ├── demo-failure.feature           #   escenario deliberadamente incorrecto (evidencia de fallo)
+│       └── DemoFailureRunner.java         #   runner aislado, excluido del `mvn test` por defecto
 ├── evidencias/                            # snapshot COMMITEADO de la ultima ejecucion exitosa (14/14)
-│   ├── karate-reports/                    #   copia de target/karate-reports (reporte nativo de Karate)
+│   ├── karate-reports/                    #   copia de target/karate-reports (reporte nativo de Karate,
+│   │                                      #   incluye demo.demo-failure.html: evidencia de fallo)
 │   └── cucumber-html-reports/             #   copia de target/cucumber-html-reports (reporte masterthought)
 ├── target/karate-reports/                # reporte nativo de Karate (se regenera en cada `mvn test`)
 ├── target/cucumber-html-reports/         # reporte enriquecido masterthought (se regenera en cada `mvn test`)
 ├── README.md
-├── EVALUATION.md
-└── Reto_Tecnico_Automation_API_v2.pdf
+└── EVALUATION.md
 ```
 
 **Decisiones de diseño:**
@@ -101,10 +103,22 @@ Al finalizar, revisar:
 
 > 📁 **`evidencias/`** contiene una copia estática de estos mismos reportes correspondiente a la última ejecución exitosa (**14/14 escenarios en verde**), committeada al repositorio para que puedan revisarse directamente en el navegador sin necesidad de instalar Java/Maven ni ejecutar la suite.
 
+## Reporte de ejecución (entregable 7.2)
+
+| Requisito | Dónde verlo |
+|---|---|
+| Total de pruebas ejecutadas | `evidencias/karate-reports/karate-summary.html` → 7 features / 14 escenarios |
+| Tasa de éxito / fallo | 14/14 (100%) — ver `karate-summary.html` o [`EVALUATION.md`](./EVALUATION.md#11-resultados-de-la-última-ejecución) |
+| Tiempo de ejecución por prueba | Tabla en [`EVALUATION.md`](./EVALUATION.md#13-tiempo-de-ejecución-por-escenario), y detalle por paso dentro de cada `.html` de `evidencias/karate-reports/` |
+| Detalle de fallos con request/response completos | La suite no tiene fallos (0/14). Se dejó un escenario de demostración aislado — ver `evidencias/karate-reports/demo.demo-failure.html` y el detalle en [`EVALUATION.md`](./EVALUATION.md#14-evidencia-de-detalle-de-fallos-escenario-de-demostración) |
+
+Ese escenario de demostración (`src/test/java/demo/demo-failure.feature`) fuerza a propósito una aserción incorrecta para dejar evidencia real de cómo Karate reporta un fallo (request, response y resultado de la validación completos). **No forma parte de la suite de regresión**: vive fuera del paquete `api` y su runner (`DemoFailureRunner.java`) está excluido del `mvn test` por defecto (el `pom.xml` restringe `surefire` a `TestRunner.java` únicamente). Para regenerarlo:
+
+```bash
+mvn test -Dtest=DemoFailureRunner
+```
+
 ## Reproducibilidad
 
 La suite no depende de estado previo ni de datos sembrados manualmente: cada escenario genera su propio dato dinámico cuando lo necesita (`java.util.UUID.randomUUID()`) y no encadena escenarios entre sí (cada uno es atómico e independiente), por lo que puede ejecutarse en paralelo (`Runner.parallel(5)`, configurado en `TestRunner.java`) o repetirse cualquier número de veces sin efectos colaterales.
 
-## Uso de IA en este reto
-
-Este framework fue desarrollado con la asistencia de **Claude Code** (Anthropic), usando exclusivamente sus herramientas base de exploración de archivos, edición de código y ejecución de comandos de shell (`Bash`) para compilar y correr la suite Maven/Karate localmente. No se utilizaron MCPs, Skills ni Agentes/Subagentes de terceros en la construcción del código de pruebas: toda la lógica de casos, aserciones y hallazgos fue validada ejecutando la suite contra la API real y verificando manualmente (vía `curl`) cada comportamiento antes de codificarlo como test.

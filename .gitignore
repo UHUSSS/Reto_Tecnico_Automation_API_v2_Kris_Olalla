@@ -7,3 +7,6 @@ target/
 
 # scaffolding auto-generado por la extension "GitHub Copilot App Modernization for Java" de VS Code
 .github/modernize/
+
+# documento del reto (confidencial, no se publica en el repo)
+Reto_Tecnico_Automation_API_v2.pdf
