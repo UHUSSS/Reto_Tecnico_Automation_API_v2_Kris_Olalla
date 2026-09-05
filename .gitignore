@@ -1,0 +1,9 @@
+target/
+*.class
+.idea/
+*.iml
+.vscode/
+.DS_Store
+
+# scaffolding auto-generado por la extension "GitHub Copilot App Modernization for Java" de VS Code
+.github/modernize/

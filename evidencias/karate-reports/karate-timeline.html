@@ -1,0 +1,32 @@
+<!DOCTYPE HTML>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <title>Karate Timeline</title>
+    <style>
+      body, html { font-family: arial, sans-serif; font-size: 11pt; }
+      #visualization { box-sizing: border-box; width: 100%; height: 300px; }
+      .vis-item.failed { background-color: #F2928C; }
+      .page-heading { padding: 0.5em; margin-bottom: 0.5em; background-color: lightcyan; border: 1px solid gray; }
+    </style>
+    <script src="res/vis.min.js"></script>
+    <link href="res/vis.min.css" rel="stylesheet" type="text/css" />
+  </head>
+  <body>
+    <div class="page-heading">
+      <a href="karate-summary.html">Summary</a>
+    </div>     
+    <div id="visualization"></div>
+    <script>
+var groups = [{"content":"pool-2-thread-1","id":1},{"content":"pool-2-thread-2","id":2},{"content":"pool-2-thread-3","id":3},{"content":"pool-2-thread-4","id":4},{"content":"pool-2-thread-5","id":5}];
+var items = [{"id":1,"group":1,"content":"api\/common\/schemas[1:6]","start":1788619374339,"end":1788619375292,"title":"api\/common\/schemas[1:6] 09:42:54.339-09:42:55.292 definicion de esquemas"},{"id":2,"group":2,"content":"api\/products\/create-product[1:8]","start":1788619374339,"end":1788619377587,"title":"api\/products\/create-product[1:8] 09:42:54.339-09:42:57.587 POST \/products con datos validos crea el producto y retorna su ID"},{"id":3,"group":3,"content":"api\/products\/create-product[2:29]","start":1788619374339,"end":1788619377557,"title":"api\/products\/create-product[2:29] 09:42:54.339-09:42:57.557 POST \/products con payload vacio - la API no valida campos obligatorios"},{"id":4,"group":4,"content":"api\/products\/get-product[1:8]","start":1788619374339,"end":1788619377597,"title":"api\/products\/get-product[1:8] 09:42:54.339-09:42:57.597 GET \/products\/{id} retorna el producto con estructura y tipos de dato correctos"},{"id":5,"group":5,"content":"api\/products\/list-by-category[1:8]","start":1788619374339,"end":1788619377667,"title":"api\/products\/list-by-category[1:8] 09:42:54.339-09:42:57.667 GET \/products\/category\/electronics retorna solo productos de esa categoria"},{"id":6,"group":1,"content":"api\/products\/list-by-category[2:22]","start":1788619375338,"end":1788619377553,"title":"api\/products\/list-by-category[2:22] 09:42:55.338-09:42:57.553 GET \/products\/category\/{categoria-inexistente} - manejo de error"},{"id":7,"group":1,"content":"api\/products\/list-products-limit[1:8]","start":1788619377575,"end":1788619378182,"title":"api\/products\/list-products-limit[1:8] 09:42:57.575-09:42:58.182 GET \/products?limit=5 retorna como maximo 5 productos"},{"id":8,"group":3,"content":"api\/products\/list-products-limit[2.1:31]","start":1788619377575,"end":1788619377952,"title":"api\/products\/list-products-limit[2.1:31] 09:42:57.575-09:42:57.952 GET \/products?limit=0 - comportamiento en valores limite (edge cases)"},{"id":9,"group":2,"content":"api\/products\/list-products-limit[2.2:32]","start":1788619377686,"end":1788619378181,"title":"api\/products\/list-products-limit[2.2:32] 09:42:57.686-09:42:58.181 GET \/products?limit=-1 - comportamiento en valores limite (edge cases)"},{"id":10,"group":4,"content":"api\/products\/list-products-limit[2.3:33]","start":1788619377622,"end":1788619378125,"title":"api\/products\/list-products-limit[2.3:33] 09:42:57.622-09:42:58.125 GET \/products?limit=abc - comportamiento en valores limite (edge cases)"},{"id":11,"group":5,"content":"api\/products\/product-not-found[1:7]","start":1788619377709,"end":1788619378123,"title":"api\/products\/product-not-found[1:7] 09:42:57.709-09:42:58.123 GET \/products\/999999 - la API no retorna 404, responde 200 con cuerpo vacio"},{"id":12,"group":3,"content":"api\/products\/product-not-found[2:19]","start":1788619377966,"end":1788619378297,"title":"api\/products\/product-not-found[2:19] 09:42:57.966-09:42:58.297 GET \/products\/{id no numerico} - mismo comportamiento inconsistente"},{"id":13,"group":5,"content":"api\/products\/update-product[1:8]","start":1788619378135,"end":1788619378640,"title":"api\/products\/update-product[1:8] 09:42:58.135-09:42:58.640 PUT \/products\/{id} con datos completos actualiza el producto correctamente"},{"id":14,"group":4,"content":"api\/products\/update-product[2:24]","start":1788619378135,"end":1788619378717,"title":"api\/products\/update-product[2:24] 09:42:58.135-09:42:58.717 Hallazgo - fakestoreapi.com no persiste realmente la actualizacion"}];
+</script>
+    <script>
+      var container = document.getElementById('visualization');
+      var timeline = new vis.Timeline(container);
+      timeline.setOptions({groupOrder: 'content'});
+      timeline.setGroups(new vis.DataSet(groups));
+      timeline.setItems(new vis.DataSet(items));
+    </script>
+  </body>
+</html>

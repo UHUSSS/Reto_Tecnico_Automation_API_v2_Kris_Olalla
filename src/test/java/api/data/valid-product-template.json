@@ -1,0 +1,7 @@
+{
+  "title": "QA Automation Product",
+  "price": 29.99,
+  "description": "Producto generado por el framework de automatizacion Karate para pruebas de API.",
+  "image": "https://fakestoreapi.com/img/qa-automation-product.png",
+  "category": "electronics"
+}
