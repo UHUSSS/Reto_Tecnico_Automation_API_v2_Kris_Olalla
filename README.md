@@ -108,7 +108,7 @@ Al finalizar, revisar:
 | Requisito | Dónde verlo |
 |---|---|
 | Total de pruebas ejecutadas | `evidencias/karate-reports/karate-summary.html` → 7 features / 14 escenarios |
-| Tasa de éxito / fallo | 14/14 (100%) — ver `karate-summary.html` o [`EVALUATION.md`](./EVALUATION.md#11-resultados-de-la-última-ejecución) |
+| Tasa de éxito / fallo | 14/14 (100%) ver `karate-summary.html` o [`EVALUATION.md`](./EVALUATION.md#11-resultados-de-la-última-ejecución) |
 | Tiempo de ejecución por prueba | Tabla en [`EVALUATION.md`](./EVALUATION.md#13-tiempo-de-ejecución-por-escenario), y detalle por paso dentro de cada `.html` de `evidencias/karate-reports/` |
 | Detalle de fallos con request/response completos | La suite no tiene fallos (0/14). Se dejó un escenario de demostración aislado — ver `evidencias/karate-reports/demo.demo-failure.html` y el detalle en [`EVALUATION.md`](./EVALUATION.md#14-evidencia-de-detalle-de-fallos-escenario-de-demostración) |
 
